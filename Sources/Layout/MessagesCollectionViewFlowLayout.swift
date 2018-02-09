@@ -235,13 +235,14 @@ fileprivate extension MessagesCollectionViewFlowLayout {
         
         // None of these are dependent on other attributes
         attributes.avatarPosition = avatarPosition(for: attributes)
-        attributes.avatarSize = avatarSize(for: attributes)
+        // attributes.avatarSize = avatarSize(for: attributes)
         attributes.messageContainerPadding = messageContainerPadding(for: attributes)
         attributes.messageLabelInsets = messageLabelInsets(for: attributes)
         
         // MessageContainerView
         attributes.messageContainerMaxWidth = messageContainerMaxWidth(for: attributes)
         attributes.messageContainerSize = messageContainerSize(for: attributes)
+        attributes.avatarSize = CGSize(width: avatarSize(for: attributes).width, height: attributes.messageContainerSize.height)
         
         // Cell Bottom Label
         attributes.bottomLabelAlignment = cellBottomLabelAlignment(for: attributes)

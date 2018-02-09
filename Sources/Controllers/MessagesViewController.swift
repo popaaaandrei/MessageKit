@@ -33,6 +33,7 @@ open class MessagesViewController: UIViewController {
 
     /// The `MessageInputBar` used as the `inputAccessoryView` in the view controller.
     open var messageInputBar = MessageInputBar()
+    var messageInputBarBottomConstraint : NSLayoutConstraint?
 
     /// A Boolean value that determines whether the `MessagesCollectionView` scrolls to the
     /// bottom whenever the `InputTextView` begins editing.
@@ -50,9 +51,9 @@ open class MessagesViewController: UIViewController {
         return true
     }
 
-    open override var inputAccessoryView: UIView? {
-        return messageInputBar
-    }
+//    open override var inputAccessoryView: UIView? {
+//        return messageInputBar
+//    }
 
     open override var shouldAutorotate: Bool {
         return false
@@ -120,6 +121,7 @@ open class MessagesViewController: UIViewController {
     /// Adds the messagesCollectionView to the controllers root view.
     private func setupSubviews() {
         view.addSubview(messagesCollectionView)
+        view.addSubview(messageInputBar)
     }
 
     /// Registers all cells and supplementary views of the messagesCollectionView property.
@@ -133,20 +135,56 @@ open class MessagesViewController: UIViewController {
         messagesCollectionView.register(MessageDateHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader)
     }
 
+    
     /// Sets the constraints of the `MessagesCollectionView`.
     private func setupConstraints() {
         messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        messageInputBar.translatesAutoresizingMaskIntoConstraints = false
         
-        let top = messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: topLayoutGuide.length)
-        let bottom = messagesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+
         if #available(iOS 11.0, *) {
-            let leading = messagesCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
-            let trailing = messagesCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-            NSLayoutConstraint.activate([top, bottom, trailing, leading])
+            
+            messagesCollectionView.topAnchor
+                .constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+            messagesCollectionView.leadingAnchor
+                .constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+            messagesCollectionView.trailingAnchor
+                .constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+            messagesCollectionView.bottomAnchor
+                .constraint(equalTo: messageInputBar.topAnchor).isActive = true
+            
+            messageInputBar.topAnchor
+                .constraint(equalTo: messagesCollectionView.bottomAnchor).isActive = true
+            messageInputBar.leadingAnchor
+                .constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+            messageInputBar.trailingAnchor
+                .constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+            messageInputBarBottomConstraint = messageInputBar.bottomAnchor
+                .constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            messageInputBarBottomConstraint?.isActive = true
+            
         } else {
-            let leading = messagesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-            let trailing = messagesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            NSLayoutConstraint.activate([top, bottom, trailing, leading])
+            
+            messagesCollectionView.topAnchor
+                .constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
+            messagesCollectionView.leadingAnchor
+                .constraint(equalTo: view.leadingAnchor).isActive = true
+            messagesCollectionView.trailingAnchor
+                .constraint(equalTo: view.trailingAnchor).isActive = true
+            messagesCollectionView.bottomAnchor
+                .constraint(equalTo: messageInputBar.topAnchor).isActive = true
+            
+            messageInputBar.topAnchor
+                .constraint(equalTo: messagesCollectionView.bottomAnchor).isActive = true
+            messageInputBar.leadingAnchor
+                .constraint(equalTo: view.leadingAnchor).isActive = true
+            messageInputBar.trailingAnchor
+                .constraint(equalTo: view.trailingAnchor).isActive = true
+            messageInputBarBottomConstraint = messageInputBar.bottomAnchor
+                .constraint(equalTo: bottomLayoutGuide.topAnchor)
+            messageInputBarBottomConstraint?.isActive = true
+
         }
+        
     }
 }
