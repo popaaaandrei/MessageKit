@@ -27,6 +27,25 @@ import UIKit
 open class MessagesViewController: UIViewController {
     
     // MARK: - Properties [Public]
+    
+    // =============================================================
+    // =============================================================
+    // =============================================================
+    
+    public func activateOptions(options: [InputBarButtonItem]) {
+        messagesCollectionView.scrollToBottom()
+        
+        // Finally set the items
+        messageInputBar.setStackViewItems(options, forStack: .top, animated: true)
+    }
+    
+    public func deactivateOptions() {
+        messageInputBar.setStackViewItems([], forStack: .top, animated: true)
+    }
+    
+    // =============================================================
+    // =============================================================
+    // =============================================================
 
     /// The `MessagesCollectionView` managed by the messages view controller object.
     open var messagesCollectionView = MessagesCollectionView()
@@ -50,10 +69,6 @@ open class MessagesViewController: UIViewController {
     open override var canBecomeFirstResponder: Bool {
         return true
     }
-
-//    open override var inputAccessoryView: UIView? {
-//        return messageInputBar
-//    }
 
     open override var shouldAutorotate: Bool {
         return false

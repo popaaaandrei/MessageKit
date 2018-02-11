@@ -610,6 +610,14 @@ open class MessageInputBar: UIView {
                     $0.parentStackViewPosition = position
                     topStackView.addArrangedSubview($0)
                 }
+                
+                // add spacing
+                let spacing = UIView()
+                spacing.heightAnchor.constraint(equalToConstant: topStackViewPadding.bottom).isActive = true
+                spacing.layer.borderWidth = 1
+                spacing.layer.borderColor = UIColor.blue.cgColor
+                topStackView.addArrangedSubview(spacing)
+                
                 guard superview != nil else { return }
                 topStackView.layoutIfNeeded()
             }
